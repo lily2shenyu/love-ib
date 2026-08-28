@@ -5406,12 +5406,21 @@ $('menu-btn').addEventListener('click',()=>drawer(true));
 $('drawer-scrim').addEventListener('click',()=>drawer(false));
 function renderDock(){
   const items=DOCKS[currentPage]||[];
+  /* 栗屿海：主页固定全局底栏 */
+  if(currentPage==='profile'||currentPage==='chat'||currentPage==='letters'||currentPage==='music'){
+    items.length=0;
+    items.push({go:'chat',t:'聊天',i:'list'});
+    items.push({go:'letters',t:'信箱',i:'note'});
+    items.push({k:'music',t:'音乐',i:'note',act:'lyhmusic'});
+    items.push({k:'set',t:'设置',i:'set',act:'set'});
+  }
   const dock=$('dock');dock.innerHTML='';
   items.forEach(it=>{
     const b=document.createElement('button');
     b.className='dock-i'+(!it.act&&_sec[currentPage]===it.k?' on':'');
     b.innerHTML='<svg viewBox="0 0 24 24">'+(IC[it.i]||'')+'</svg><span>'+esc(it.t)+'</span>';
     b.addEventListener('click',()=>{
+      if(it.go){navTo(it.go);window.scrollTo(0,0);renderDock();return}
       if(it.act){dockAction(it.act);return}
       _sec[currentPage]=it.k;showSec();renderDock();window.scrollTo(0,0);
     });
@@ -5419,6 +5428,7 @@ function renderDock(){
   });
 }
 function dockAction(a){
+  if(a==='lyhmusic'){try{var ma=$('music-app');if(ma){ma.classList.add('active');ma.style.display='flex';return}}catch(e){}try{if(typeof openMusic==='function')openMusic()}catch(e){}}
   if(a==='set')openSettings();
   else if(a==='blognew')blogOpenEditor();
   else if(a==='blogcat')blogOpenCats();
@@ -20596,6 +20606,14 @@ try{var _cso9=$('call-set-open');if(_cso9)_cso9.addEventListener('click',functio
     } catch (e) {}
   }
   setTimeout(lyhCirclePost, 1800);
+
+  /* 4. 删除多余模块入口 */
+  function lyhPrune() {
+    try {
+      document.querySelectorAll('.sb-app[data-page="api"],.sb-app[data-page="icode"],.sb-app[data-page="diy"]').forEach(function(el){el.remove()});
+    } catch(e) {}
+  }
+  setTimeout(lyhPrune, 500); setTimeout(lyhPrune, 2000);
 })();
 </script>
 
