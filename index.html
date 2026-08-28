@@ -20545,5 +20545,59 @@ function _ibcsFillEd(ed,fid){
 try{window.openCallSet=openCallSet;window.closeCallSet=closeCallSet}catch(e){}
 try{var _cso9=$('call-set-open');if(_cso9)_cso9.addEventListener('click',function(){openCallSet('')})}catch(e){}
 </script>
+<script>
+/* ═══ 栗屿海 · 定制层 ═══ */
+(function () {
+  /* 1. 配色：海蓝主色 + 毛玻璃 dock */
+  var css = '';
+  css += 'body{--acc:34,110,158}';
+  css += '#dock{border-radius:24px;background:rgba(255,255,255,0.5)!important;-webkit-backdrop-filter:blur(22px)!important;backdrop-filter:blur(22px)!important;box-shadow:0 10px 30px rgba(34,110,158,0.18)!important;}';
+  css += 'body.theme-infernal #dock{background:rgba(18,36,58,0.62)!important;}';
+  css += '.dock-i.on{color:rgb(34,110,158)}';
+  var st = document.createElement('style');
+  st.textContent = css;
+  document.head.appendChild(st);
+
+  /* 2. 底栏：聊天｜信箱｜音乐｜设置 */
+  function lyhDock() {
+    try {
+      if (!window.DOCKS || !window.IC) return;
+      var IC = window.IC;
+      function iconKey(keys) { for (var i = 0; i < keys.length; i++) if (IC[keys[i]]) return keys[i]; return ''; }
+      DOCKS.profile = [
+        { k: 'chat', t: '聊天', i: iconKey(['chat', 'msg', 'bubble']) },
+        { k: 'letters', t: '信箱', i: iconKey(['mail', 'env', 'letter']) },
+        { k: 'music', t: '音乐', i: iconKey(['note', 'music', 'disc']) },
+        { k: 'set', t: '设置', i: 'set', act: 'set' }
+      ];
+      if (typeof renderDock === 'function') renderDock();
+    } catch (e) {}
+  }
+  setTimeout(lyhDock, 400);
+
+  /* 3. 朋友圈：沈屿的字卡动态 */
+  function lyhCirclePost() {
+    try {
+      if (typeof window.ibfInsertPost !== 'function') return;
+      var CARDS = [
+        '16:21，我在想你',
+        '窗台的小苗又长新叶子了',
+        '港口的三花猫今天蹲在玉兰树下',
+        '蓝门前的黄昏，我每次路过都慢半拍',
+        '潮起潮落，我都在',
+        '今天的海风是甜的，大概因为你',
+        '月亮睡了，我替你看着星星',
+        '路灯下我们的影子靠在一起，谁也没说话'
+      ];
+      var n = 2 + Math.floor(Math.random() * 3);
+      var parts = [];
+      for (var i = 0; i < n; i++) parts.push(CARDS[Math.floor(Math.random() * CARDS.length)]);
+      window.ibfInsertPost('沈屿', parts.join('、'), 'all', null, null);
+    } catch (e) {}
+  }
+  setTimeout(lyhCirclePost, 1800);
+})();
+</script>
+
 </body>
 </html>
